@@ -19,7 +19,7 @@ export class ConfigService {
     this.discordClientId = process.env.DISCORD_CLIENT_ID || '';
     this.mongoURL = process.env.MONGO_URL || 'mongodb://localhost/coach';
     this.adminPrefix = process.env.ADMIN_PREIFX || 'coach admin';
-    this.defaultPrefix = process.env.DEFAULT_PREFIX || '!';
+    this.defaultPrefix = process.env.DEFAULT_PREFIX || 'coach';
   }
 
   getBotInviteLink(permissions = '1075305537'): string {
