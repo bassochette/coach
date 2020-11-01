@@ -18,7 +18,7 @@ export class HelpHandler implements ICommandHandler {
 
     message.channel.send({
       embed: {
-        description: 'Webeleon bot template help',
+        description: 'Coach help',
         fields: [
           {
             name: `${prefix}help`,
