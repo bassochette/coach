@@ -35,7 +35,6 @@ jobs:
             npm ci --silent
             npm run build
             pm2 stop "coach"
-            npm run migrate:up
             pm2 start npm --name "coach" -- start
 
     services:
