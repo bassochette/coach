@@ -115,7 +115,7 @@ export class ServerService {
     } else {
       if (server.allowedChannels.includes(channel.id)) {
         server.allowedChannels = server.allowedChannels.filter(
-          chanId => chanId !== channel.id,
+          (chanId) => chanId !== channel.id,
         );
         await server.save();
       }

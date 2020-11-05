@@ -21,6 +21,6 @@ async function bootstrap() {
 }
 bootstrap();
 
-process.on('uncaughtException', error => {
+process.on('uncaughtException', (error) => {
   Logger.error(`UNHANDLED ERROR => ${error.message}`, error.stack);
 });

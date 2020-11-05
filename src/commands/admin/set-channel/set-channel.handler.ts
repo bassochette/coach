@@ -33,7 +33,7 @@ export class SetChannelHandler implements ICommandHandler {
       .setColor('GREEN')
       .setTitle('Channel authorized')
       .setDescription(`**Currently authorized channels**
-${server.allowedChannels.map(chan => `<#${chan}>`).join('\n')}`);
+${server.allowedChannels.map((chan) => `<#${chan}>`).join('\n')}`);
     message.channel.send(embed);
   }
 }

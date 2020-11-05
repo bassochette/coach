@@ -54,7 +54,7 @@ export class CommandsService {
       Logger.log(`${command.name} registered`, 'CommandExplorer');
     }
 
-    client.on('message', async message => {
+    client.on('message', async (message) => {
       try {
         await this.messageHandler(message);
       } catch (error) {

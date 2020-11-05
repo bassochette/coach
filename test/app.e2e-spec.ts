@@ -16,16 +16,10 @@ describe('AppController (e2e)', () => {
   });
 
   it('Health checks on /', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('ok');
+    return request(app.getHttpServer()).get('/').expect(200).expect('ok');
   });
 
   it('Health check on /health', () => {
-    return request(app.getHttpServer())
-      .get('/health')
-      .expect(200)
-      .expect('ok');
+    return request(app.getHttpServer()).get('/health').expect(200).expect('ok');
   });
 });

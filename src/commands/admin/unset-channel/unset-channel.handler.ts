@@ -32,7 +32,7 @@ export class UnsetChannelHandler implements ICommandHandler {
       .setColor(`GREEN`)
       .setTitle(`Channel unauthorized`)
       .setDescription(`**Currently authorized channels**
-${server.allowedChannels.map(chan => `<#${chan}>`).join(`\n`)}`);
+${server.allowedChannels.map((chan) => `<#${chan}>`).join(`\n`)}`);
     message.channel.send(embed);
   }
 }
