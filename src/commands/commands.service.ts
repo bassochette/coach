@@ -13,6 +13,7 @@ import { SetPrefixHandler } from './admin/set-prefix/set-prefix.handler';
 import { SetAdminRoleHandler } from './admin/set-admin-role/set-admin-role.handler';
 import { SetChannelHandler } from './admin/set-channel/set-channel.handler';
 import { UnsetChannelHandler } from './admin/unset-channel/unset-channel.handler';
+import { WeightHandler } from './track/weight/weight.handler';
 
 @Injectable()
 export class CommandsService {
@@ -28,6 +29,7 @@ export class CommandsService {
     private readonly inviteHandler: InviteHandler,
     private readonly helpHandler: HelpHandler,
     private readonly statusHandler: StatusHandler,
+    private readonly weightHandler: WeightHandler,
 
     // Admin handlers
     private readonly setAdminRole: SetAdminRoleHandler,
@@ -41,6 +43,7 @@ export class CommandsService {
       inviteHandler,
       helpHandler,
       statusHandler,
+      weightHandler,
 
       // admin commands
       setAdminRole,
@@ -73,7 +76,7 @@ export class CommandsService {
 
     // Test for custom prefix
     const serverPrefix = await this.serverService.getServerPrefix(
-      message.guild.id,
+      message.guild?.id,
     );
     const prefixRegexp = new RegExp(
       `^(${this.escapePrefixForRegexp(
@@ -89,6 +92,8 @@ export class CommandsService {
     if (serverPrefixRegexp.test(message.content)) {
       // test if channel is allowed only on user commands
       if (
+        message.guild &&
+        message.channel &&
         !(await this.serverService.isChannelAllowed(
           message.guild.id,
           message.channel.id,

@@ -25,7 +25,7 @@ export class ServerService {
 
   async getServerPrefix(serverId: string): Promise<string> {
     const server = await this.getServer(serverId);
-    return server.prefix ?? '!';
+    return server.prefix ?? this.configService.defaultPrefix;
   }
 
   async setServerPrefix(serverId: string, prefix: string): Promise<string> {

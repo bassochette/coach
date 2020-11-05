@@ -43,9 +43,12 @@ export class WeightService {
     const variation: WeightVariation = {
       lastWeightInKg: memberWeight.currentInKg,
       currentWeightInKg: weightInKg,
-      variation: memberWeight.currentInKg - weightInKg,
+      variation: weightInKg - memberWeight.currentInKg,
       historic: memberWeight.historic ?? [],
     };
+
+    memberWeight.currentInKg = weightInKg;
+    await memberWeight.save();
 
     return variation;
   }
