@@ -23,12 +23,13 @@ export class HelpHandler implements ICommandHandler {
         description: 'Coach help',
         fields: [
           {
-            name: `${prefix}help`,
-            value: 'display this message',
+            name: `${prefix}track weight <weight in kg>`,
+            value:
+              'Track your weight and return a report. :wink: you can send a DM.',
           },
           {
-            name: `${prefix}ping`,
-            value: 'reply `pong!`',
+            name: `${prefix}help`,
+            value: 'display this message',
           },
           {
             name: `${prefix}invite`,
