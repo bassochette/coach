@@ -14,13 +14,20 @@ import { SetPrefixHandler } from './admin/set-prefix/set-prefix.handler';
 import { SetAdminRoleHandler } from './admin/set-admin-role/set-admin-role.handler';
 import { SetChannelHandler } from './admin/set-channel/set-channel.handler';
 import { UnsetChannelHandler } from './admin/unset-channel/unset-channel.handler';
+import { BodyMetricsModule } from '../body-metrics/body-metrics.module';
+import { WeightHandler } from './track/weight/weight.handler';
 
 describe('CommandsService', () => {
   let service: CommandsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [rootMongooseTestModule(), ConfigModule, ServerModule],
+      imports: [
+        rootMongooseTestModule(),
+        ConfigModule,
+        ServerModule,
+        BodyMetricsModule,
+      ],
       providers: [
         CommandsService,
 
@@ -29,6 +36,7 @@ describe('CommandsService', () => {
         InviteHandler,
         HelpHandler,
         StatusHandler,
+        WeightHandler,
 
         // admin handler
         SetAdminRoleHandler,

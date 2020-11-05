@@ -4,13 +4,14 @@ import {
   closeInMongodConnection,
   rootMongooseTestModule,
 } from '../../../test-utils/mongo/MongooseTestModule';
+import { BodyMetricsModule } from '../../../body-metrics/body-metrics.module';
 
 describe('WeightHandler', () => {
   let service: WeightHandler;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [rootMongooseTestModule()],
+      imports: [rootMongooseTestModule(), BodyMetricsModule],
       providers: [WeightHandler],
     }).compile();
 
