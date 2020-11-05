@@ -15,7 +15,7 @@ export class HelpHandler implements ICommandHandler {
 
   async execute(message: Message): Promise<void> {
     const prefix = this.serverService.formatPrefix(
-      await this.serverService.getServerPrefix(message.guild.id),
+      await this.serverService.getServerPrefix(message.guild?.id),
     );
 
     message.channel.send({
