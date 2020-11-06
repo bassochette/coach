@@ -5,6 +5,10 @@ import { ICommandHandler } from '../../ICommandHandler';
 import { WeightService } from '../../../body-metrics/weight/weight.service';
 import { WeightVariation } from '../../../body-metrics/weight/weight.interfaces';
 
+interface WeightHandlerParameters {
+  rawWeight: string;
+}
+
 @Injectable()
 export class WeightHandler implements ICommandHandler {
   name = 'track weight <weight in kg>';
@@ -17,10 +21,9 @@ export class WeightHandler implements ICommandHandler {
   }
 
   async execute(message: Message): Promise<void> {
-    const [cmd, weightRaw] = message.content.match(
-      /^track weight ([0-9]+[.|,]?[0-9]*)/i,
-    );
-    const weight = parseFloat(weightRaw);
+    const { rawWeight } = this.extractParameters(message.content);
+
+    const weight = this.transformRawWeight(rawWeight);
     const variation = await this.weightService.logWeight(
       message.author.id,
       weight,
@@ -28,6 +31,19 @@ export class WeightHandler implements ICommandHandler {
 
     const embed = this.formatMessage(variation);
     message.channel.send(embed);
+  }
+
+  extractParameters(content: string): WeightHandlerParameters {
+    const [cmd, rawWeight] = content.match(
+      /^track weight ([0-9]+[.|,]?[0-9]*)/i,
+    );
+    return {
+      rawWeight,
+    };
+  }
+
+  transformRawWeight(rawWeight: string): number {
+    return parseFloat(rawWeight.replace(',', '.'));
   }
 
   formatMessage(weightVariation: WeightVariation): MessageEmbed {

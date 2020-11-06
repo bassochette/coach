@@ -22,7 +22,29 @@ describe('WeightHandler', () => {
     await closeInMongodConnection();
   });
 
+  beforeEach(() => {});
+
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should extract parameters from the message', () => {
+    expect(service.extractParameters('track weight 75.63kg')).toMatchObject({
+      rawWeight: '75.63',
+    });
+    expect(service.extractParameters('track weight 75,63kg')).toMatchObject({
+      rawWeight: '75,63',
+    });
+    expect(service.extractParameters('track weight 75.63')).toMatchObject({
+      rawWeight: '75.63',
+    });
+    expect(service.extractParameters('track weight 75,63')).toMatchObject({
+      rawWeight: '75,63',
+    });
+  });
+
+  it('should parse and transform weight from message into the correct number', () => {
+    expect(service.transformRawWeight('102.56')).toEqual(102.56);
+    expect(service.transformRawWeight('102,56')).toEqual(102.56);
   });
 });
