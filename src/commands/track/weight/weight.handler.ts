@@ -1,5 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Message, MessageEmbed } from 'discord.js';
+import { round } from 'lodash';
 
 import { ICommandHandler } from '../../ICommandHandler';
 import { WeightService } from '../../../body-metrics/weight/weight.service';
@@ -51,7 +52,7 @@ export class WeightHandler implements ICommandHandler {
 
     let massString = '';
     if (Math.abs(variation) >= 1) {
-      massString = `${Math.trunc(variation)} kg`;
+      massString = `${round(variation, 2)} kg`;
     } else {
       massString = `${Math.floor(variation * 1000)} g`;
     }
