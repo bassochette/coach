@@ -13,11 +13,12 @@ interface WeightHandlerParameters {
 export class WeightHandler implements ICommandHandler {
   name = 'track weight <weight in kg>';
   description = '';
+  regex = /^(?:track )?(?:weight|poid) ([0-9]+[.|,]?[0-9]*)/i;
 
   constructor(private readonly weightService: WeightService) {}
 
   test(content: string): boolean {
-    return /^track weight/.test(content);
+    return this.regex.test(content);
   }
 
   async execute(message: Message): Promise<void> {
@@ -34,9 +35,7 @@ export class WeightHandler implements ICommandHandler {
   }
 
   extractParameters(content: string): WeightHandlerParameters {
-    const [cmd, rawWeight] = content.match(
-      /^track weight ([0-9]+[.|,]?[0-9]*)/i,
-    );
+    const [cmd, rawWeight] = content.match(this.regex);
     return {
       rawWeight,
     };

@@ -75,33 +75,35 @@ export class CommandsService {
     const { content } = message;
 
     // Test for custom prefix
-    const serverPrefix = await this.serverService.getServerPrefix(
-      message.guild?.id,
-    );
-    const prefixRegexp = new RegExp(
-      `^(${this.escapePrefixForRegexp(
-        this.configService.adminPrefix,
-      )}|${this.escapePrefixForRegexp(serverPrefix)})`,
-      'i',
-    );
-    if (!prefixRegexp.test(message.content)) return;
-    const serverPrefixRegexp = new RegExp(
-      `^${this.escapePrefixForRegexp(serverPrefix)}`,
-      'i',
-    );
-    if (serverPrefixRegexp.test(message.content)) {
-      // test if channel is allowed only on user commands
-      if (
-        message.guild &&
-        message.channel &&
-        !(await this.serverService.isChannelAllowed(
-          message.guild.id,
-          message.channel.id,
-        ))
-      ) {
-        return;
+    if (!this.isDM(message)) {
+      const serverPrefix = await this.serverService.getServerPrefix(
+        message.guild?.id,
+      );
+      const prefixRegexp = new RegExp(
+        `^(${this.escapePrefixForRegexp(
+          this.configService.adminPrefix,
+        )}|${this.escapePrefixForRegexp(serverPrefix)})`,
+        'i',
+      );
+      if (!prefixRegexp.test(message.content)) return;
+      const serverPrefixRegexp = new RegExp(
+        `^${this.escapePrefixForRegexp(serverPrefix)}`,
+        'i',
+      );
+      if (serverPrefixRegexp.test(message.content)) {
+        // test if channel is allowed only on user commands
+        if (
+          !(await this.serverService.isChannelAllowed(
+            message.guild.id,
+            message.channel.id,
+          ))
+        ) {
+          return;
+        }
+        message.content = message.content
+          .replace(serverPrefixRegexp, '')
+          .trim();
       }
-      message.content = message.content.replace(serverPrefixRegexp, '').trim();
     }
 
     for (const handler of this.commandHandlers) {
@@ -119,6 +121,10 @@ export class CommandsService {
         }
       }
     }
+  }
+
+  isDM(message: Message): boolean {
+    return !(message.guild && message.channel);
   }
 
   private escapePrefixForRegexp(serverPrefix: string): string {

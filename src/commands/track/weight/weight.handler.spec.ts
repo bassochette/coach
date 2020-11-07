@@ -28,6 +28,20 @@ describe('WeightHandler', () => {
     expect(service).toBeDefined();
   });
 
+  it('should respond to track weight or weight or poid or rtrack poid', () => {
+    expect(service.test('track weight 52')).toBeTruthy();
+    expect(service.test('TrAck Weight 78kg')).toBeTruthy();
+    expect(service.test('weight 23')).toBeTruthy();
+    expect(service.test('track poid 52kg')).toBeTruthy();
+    expect(service.test('poid 78kg')).toBeTruthy();
+
+    expect(service.test('only if starting with track weight 23')).toBeFalsy();
+    expect(service.test('track weight')).toBeFalsy();
+    expect(service.test('weight')).toBeFalsy();
+    expect(service.test('track poid')).toBeFalsy();
+    expect(service.test('poid')).toBeFalsy();
+  });
+
   it('should extract parameters from the message', () => {
     expect(service.extractParameters('track weight 75.63kg')).toMatchObject({
       rawWeight: '75.63',
