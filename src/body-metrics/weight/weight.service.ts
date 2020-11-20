@@ -20,6 +20,7 @@ export class WeightService {
 
   async getMemberWeight(
     memberDiscordId: string,
+    weightInKg: number,
   ): Promise<MemberWeightDocument> {
     const memberWeight = await this.memberWeightModel.findOne({
       memberDiscordId,
@@ -27,7 +28,8 @@ export class WeightService {
     if (!memberWeight) {
       return this.memberWeightModel.create({
         memberDiscordId,
-        currentInKg: 0,
+        currentInKg: weightInKg,
+        initialInKg: weightInKg,
       });
     }
     return memberWeight;
@@ -37,18 +39,20 @@ export class WeightService {
     memberDiscordId: string,
     weightInKg: number,
   ): Promise<WeightVariation> {
-    const memberWeight = await this.getMemberWeight(memberDiscordId);
-    memberWeight.historic.push(memberWeight.currentInKg);
+    const memberWeight = await this.getMemberWeight(
+      memberDiscordId,
+      weightInKg,
+    );
 
     const variation: WeightVariation = {
       lastWeightInKg: memberWeight.currentInKg,
       currentWeightInKg: weightInKg,
       variation: weightInKg - memberWeight.currentInKg,
-      historic: memberWeight.historic ?? [],
     };
 
     memberWeight.currentInKg = weightInKg;
     await memberWeight.save();
+    await this.weightLogModel.create({ memberDiscordId, weightInKg });
 
     return variation;
   }

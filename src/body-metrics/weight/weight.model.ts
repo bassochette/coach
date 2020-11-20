@@ -14,7 +14,7 @@ export const MemberWeightSchema = new Schema(
   {
     memberDiscordId: String,
     currentInKg: Number,
-    historic: [Number],
+    initialInKg: Number,
   },
   {
     timestamps: true,

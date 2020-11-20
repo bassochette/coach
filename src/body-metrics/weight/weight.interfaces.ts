@@ -13,7 +13,7 @@ export interface WeightLogDocument extends WeightLog, Document {}
 export interface MemberWeight {
   memberDiscordId: string;
   currentInKg: number;
-  historic: number[];
+  initialInKg: number;
 
   createdAt?: Date;
   updatedAt?: Date;
